@@ -84,10 +84,12 @@
           </svg>
         </button>
       </header>
-      <div class="empty-state">
+      <div id="mine-empty-wrap" class="empty-state">
         <div class="empty-state__emoji">📚</div>
         <div id="mine-empty">Search to add your first title.</div>
       </div>
+      <div id="mine-list" class="backlog-grid hidden"></div>
+      <button id="mine-fab" class="fab" aria-label="Add title" title="Add title">＋</button>
     </section>
 
     <!-- Bottom nav -->
@@ -107,6 +109,18 @@
     </nav>
 
   </main>
+
+  <!-- ── Search modal ── -->
+  <div id="search-modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="modal__panel">
+      <header class="modal__header">
+        <input id="search-input" class="modal__input" type="search" placeholder="Search movies & TV…" autocomplete="off" spellcheck="false">
+        <button id="search-close" class="modal__close" aria-label="Close" title="Close">✕</button>
+      </header>
+      <div id="search-status" class="modal__status">Type to search movies and TV.</div>
+      <div id="search-results" class="modal__results"></div>
+    </div>
+  </div>
 
   <!-- ── Settings sheet ── -->
   <div id="settings-sheet" class="sheet hidden" role="dialog" aria-modal="true">

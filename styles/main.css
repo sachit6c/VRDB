@@ -264,3 +264,208 @@ button {
 
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+/* ── Mine: backlog grid + FAB ───────────────────────────────── */
+.backlog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  padding-bottom: 5rem;
+}
+
+.backlog-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.backlog-card__poster {
+  aspect-ratio: 2 / 3;
+  background: var(--surface-2);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.backlog-card__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.backlog-card__poster--empty {
+  font-size: 2.5rem;
+  opacity: 0.4;
+}
+
+.backlog-card__title {
+  font-size: 0.9rem;
+  line-height: 1.2;
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.backlog-card__sub {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.backlog-card[data-state="watched"] .backlog-card__poster img {
+  filter: grayscale(0.5);
+  opacity: 0.7;
+}
+
+.fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: calc(var(--nav-height) + var(--safe-bottom) + 1rem);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 2rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  z-index: 60;
+  transition: transform 0.1s;
+}
+
+.fab:active { transform: scale(0.94); }
+
+/* ── Search modal ───────────────────────────────────────────── */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  animation: fade-in 0.15s;
+}
+
+.modal__panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: var(--safe-top);
+}
+
+.modal__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal__input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.modal__input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.modal__close {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  color: var(--text);
+}
+
+.modal__close:hover { background: var(--surface-2); }
+
+.modal__status {
+  padding: 0.6rem 1rem;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+.modal__results {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.result-card {
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  text-align: left;
+  color: inherit;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.result-card:hover:not(:disabled) { background: var(--surface-2); }
+.result-card:active:not(:disabled) { transform: scale(0.99); }
+
+.result-card__poster {
+  width: 56px;
+  height: 84px;
+  background: var(--surface-2);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.result-card__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.result-card__poster--empty { font-size: 1.5rem; opacity: 0.4; }
+
+.result-card__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.result-card__sub {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.result-card__add {
+  font-size: 1.5rem;
+  color: var(--accent);
+  padding: 0 0.5rem;
+}
+
+.result-card.is-loading { opacity: 0.5; }
+.result-card.is-added {
+  background: var(--surface-2);
+  opacity: 0.7;
+}
+.result-card.is-added .result-card__add { color: var(--success, var(--accent)); }

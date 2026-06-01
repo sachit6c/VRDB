@@ -1,8 +1,9 @@
-// app.js — VRDB entry point (Phase 1: shell only).
+// app.js — VRDB entry point.
 
 import { getMe, setMe, getPartner, clearMe, PARTNERS } from './lib/identity.js';
 import { applyStoredTheme, getTheme, setTheme } from './lib/theme.js';
 import { initRouter } from './lib/router.js';
+import { initMine } from './lib/mine.js';
 
 applyStoredTheme();
 
@@ -43,10 +44,11 @@ function bootApp() {
   // Render placeholder empty states with names.
   setEmptyState('partner-empty', `${partner} hasn't added anything yet.`);
   setEmptyState('shared-empty', 'No matches yet — start swiping!');
-  setEmptyState('mine-empty', `Welcome, ${me}. Search to add your first title.`);
+  setEmptyState('mine-empty', `Welcome, ${me}. Tap ＋ to add your first title.`);
 
   initRouter();
   wireSettings();
+  initMine();
 }
 
 function setEmptyState(id, text) {
