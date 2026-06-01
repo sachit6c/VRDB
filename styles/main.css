@@ -251,6 +251,24 @@ button {
   color: var(--accent-ink);
 }
 
+.segmented__btn[aria-selected="true"] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* Full-width tabs variant used on Discover. */
+.segmented--tabs {
+  display: flex;
+  width: 100%;
+  margin: 0 0 0.75rem;
+}
+.segmented--tabs .segmented__btn {
+  flex: 1 1 0;
+  padding: 0.5rem 0.5rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
 .sheet__close {
   display: block;
   width: 100%;

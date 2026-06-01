@@ -33,9 +33,20 @@
       <header class="screen__header">
         <div>
           <h1 class="screen__title">Discover</h1>
-          <p class="screen__sub">Trending this week</p>
+          <p class="screen__sub" id="discover-sub">Trending this week</p>
         </div>
+        <button id="discover-refresh" class="icon-btn" aria-label="Refresh suggestions" title="Refresh">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"/>
+          </svg>
+        </button>
       </header>
+      <div class="segmented segmented--tabs" role="tablist" aria-label="Discover surfaces">
+        <button class="segmented__btn" data-surface="trending"   role="tab" aria-selected="true">Trending</button>
+        <button class="segmented__btn" data-surface="for_us"     role="tab" aria-selected="false">For us</button>
+        <button class="segmented__btn" data-surface="for_you"    role="tab" aria-selected="false">For you</button>
+        <button class="segmented__btn" data-surface="surprise"   role="tab" aria-selected="false">Surprise</button>
+      </div>
       <div id="discover-stack" class="card-stack hidden"></div>
       <div id="discover-empty" class="empty-state">Loading…</div>
       <div id="discover-hint" class="discover-hint hidden">
