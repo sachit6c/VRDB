@@ -3,7 +3,10 @@
 import { getMe, setMe, getPartner, clearMe, PARTNERS } from './lib/identity.js';
 import { applyStoredTheme, getTheme, setTheme } from './lib/theme.js';
 import { initRouter } from './lib/router.js';
-import { initMine } from './lib/mine.js';
+import { initMine, refreshMine } from './lib/mine.js';
+import { initDiscover, refreshDiscover } from './lib/discover.js';
+import { initSearchModal } from './lib/search-modal.js';
+import { initDetailSheet } from './lib/detail-sheet.js';
 
 applyStoredTheme();
 
@@ -48,7 +51,12 @@ function bootApp() {
 
   initRouter();
   wireSettings();
+
+  const refreshAll = () => { refreshMine(); refreshDiscover(); };
+  initSearchModal({ onAdded: refreshAll });
+  initDetailSheet({ onChange: refreshAll });
   initMine();
+  initDiscover();
 }
 
 function setEmptyState(id, text) {

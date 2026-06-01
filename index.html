@@ -33,12 +33,19 @@
       <header class="screen__header">
         <div>
           <h1 class="screen__title">Discover</h1>
-          <p class="screen__sub">Trending · For Us · For You · Surprise Me</p>
+          <p class="screen__sub">Trending this week</p>
         </div>
       </header>
-      <div class="empty-state">
-        <div class="empty-state__emoji">🎬</div>
-        <div>Coming in Phase 4 — card swiping.</div>
+      <div id="discover-stack" class="card-stack hidden"></div>
+      <div id="discover-empty" class="empty-state">Loading…</div>
+      <div id="discover-hint" class="discover-hint hidden">
+        ← Hell no &nbsp;·&nbsp; ↑ Later &nbsp;·&nbsp; → Want now &nbsp;·&nbsp; ↓ Watched
+      </div>
+      <div id="discover-actions" class="discover-actions hidden" role="group" aria-label="Swipe actions">
+        <button type="button" data-action="left"  class="action-btn action-btn--no"     aria-label="Hell no">✕</button>
+        <button type="button" data-action="down"  class="action-btn action-btn--watched" aria-label="Watched">👁</button>
+        <button type="button" data-action="up"    class="action-btn action-btn--later"   aria-label="Want later">⏰</button>
+        <button type="button" data-action="right" class="action-btn action-btn--yes"     aria-label="Want now">♥</button>
       </div>
     </section>
 
