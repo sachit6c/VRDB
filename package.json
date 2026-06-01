@@ -1,0 +1,9 @@
+{
+  "name": "vrdb",
+  "version": "0.1.0",
+  "description": "A movie & TV backlog app for two — Tinder-style swiping with a shared matched list",
+  "type": "module",
+  "scripts": {
+    "start": "npx serve ."
+  }
+}
