@@ -9,8 +9,11 @@ import { initPartner, refreshPartner } from './lib/partner.js';
 import { initShared, refreshShared } from './lib/shared.js';
 import { initSearchModal } from './lib/search-modal.js';
 import { initDetailSheet } from './lib/detail-sheet.js';
+import { toast } from './lib/toast.js';
 
 applyStoredTheme();
+registerServiceWorker();
+wireConnectionToasts();
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!getMe()) {
@@ -103,4 +106,19 @@ function renderThemeSegmented() {
   document.querySelectorAll('.segmented__btn[data-theme-mode]').forEach((btn) => {
     btn.setAttribute('aria-pressed', btn.dataset.themeMode === current ? 'true' : 'false');
   });
+}
+
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator)) return;
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((err) => {
+      console.warn('SW registration failed', err);
+    });
+  });
+}
+
+function wireConnectionToasts() {
+  window.addEventListener('offline', () => toast('You\'re offline. Changes will pause until you reconnect.', { kind: 'warn', duration: 5000 }));
+  window.addEventListener('online',  () => toast('Back online.', { kind: 'info', duration: 2000 }));
 }
