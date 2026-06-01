@@ -62,3 +62,25 @@ npm start    # serve index.html and click through the main flows
 - The PAT is in `~/.zshrc` only — never paste it into source files, commit messages, or shared chats.
 - If the token leaks, revoke it at https://github.com/settings/tokens and update `~/.zshrc`.
 - Supabase anon key and TMDB key are inlined intentionally for a 2-user trusted-URL app. Do not treat them as secrets, but also do not use them in any new context without re-evaluating the threat model.
+
+## Token Rotation Playbook
+
+When pushes start failing with `Invalid username or token` / HTTP 401:
+
+1. Quick check the current token in a fresh shell:
+   ```bash
+   curl -sS -o /dev/null -w "HTTP %{http_code}\n" \
+     -u "sachit6c:${GITHUB_TOKEN}" https://api.github.com/repos/sachit6c/VRDB
+   ```
+   `200` = good. `401` = token is expired or revoked.
+2. Generate a new **classic PAT** at https://github.com/settings/tokens with `repo` scope (or a fine-grained one with read/write **Contents** on the relevant `sachit6c/*` repos).
+3. Edit `~/.zshrc` and replace the `export GITHUB_TOKEN=...` line.
+4. `source ~/.zshrc` in any open terminal, or open a new one.
+5. Retry the push command from the Release workflow above.
+
+When piping pushes through tools that print URLs, always sanitize the output so the token doesn't appear in logs:
+
+```bash
+git push "https://sachit6c:${GITHUB_TOKEN}@github.com/sachit6c/VRDB.git" main --tags 2>&1 \
+  | sed -E "s|${GITHUB_TOKEN}|***|g"
+```
