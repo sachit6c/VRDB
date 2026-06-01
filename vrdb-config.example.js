@@ -70,5 +70,5 @@ export const SUPABASE_ANON_KEY = 'your-supabase-anon-key';
 // TMDB v3 API key (the short one, not the long Read Access Token).
 export const TMDB_API_KEY      = 'your-tmdb-api-key';
 
-// The two partner names. These are the only valid identities in the app.
-export const PARTNERS = ['Sachit', 'Partner'];
+// NOTE: Partner names are NOT here. They live in lib/partners.js (committed)
+// because they aren't secret and need to ship with the deployment.

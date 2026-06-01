@@ -1,0 +1,62 @@
+/* styles/variables.css
+   Theme tokens for VRDB.
+   Default = dark (cinema). Light mode auto-applies via prefers-color-scheme.
+   Manual override via <html data-theme="light"> or "dark" wins over the media query. */
+
+:root {
+  /* Dark mode defaults */
+  --bg:           #0A0A0A;
+  --surface:      #1C1C1C;
+  --surface-2:    #262626;
+  --accent:       #E8B547;
+  --accent-ink:   #1A1A1A;
+  --text:         #F0F0F0;
+  --text-dim:     rgba(240, 240, 240, 0.6);
+  --border:       rgba(255, 255, 255, 0.08);
+  --shadow:       0 4px 20px rgba(0, 0, 0, 0.6);
+
+  --font-display: 'Bebas Neue', system-ui, sans-serif;
+  --font-body:    system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --nav-height:   64px;
+  --safe-bottom:  env(safe-area-inset-bottom, 0px);
+  --safe-top:     env(safe-area-inset-top, 0px);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg:         #FAF7F2;
+    --surface:    #FFFFFF;
+    --surface-2:  #F2EFE9;
+    --accent:     #B8231C;
+    --accent-ink: #FFFFFF;
+    --text:       #1A1A1A;
+    --text-dim:   rgba(26, 26, 26, 0.55);
+    --border:     rgba(0, 0, 0, 0.08);
+    --shadow:     0 4px 20px rgba(0, 0, 0, 0.08);
+  }
+}
+
+[data-theme="light"] {
+  --bg:         #FAF7F2;
+  --surface:    #FFFFFF;
+  --surface-2:  #F2EFE9;
+  --accent:     #B8231C;
+  --accent-ink: #FFFFFF;
+  --text:       #1A1A1A;
+  --text-dim:   rgba(26, 26, 26, 0.55);
+  --border:     rgba(0, 0, 0, 0.08);
+  --shadow:     0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] {
+  --bg:         #0A0A0A;
+  --surface:    #1C1C1C;
+  --surface-2:  #262626;
+  --accent:     #E8B547;
+  --accent-ink: #1A1A1A;
+  --text:       #F0F0F0;
+  --text-dim:   rgba(240, 240, 240, 0.6);
+  --border:     rgba(255, 255, 255, 0.08);
+  --shadow:     0 4px 20px rgba(0, 0, 0, 0.6);
+}

@@ -7,15 +7,130 @@
   <meta name="theme-color" content="#FAF7F2" media="(prefers-color-scheme: light)">
   <title>VRDB</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='28'>🎬</text></svg>">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-  <main style="
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    min-height:100vh;margin:0;font-family:system-ui,sans-serif;
-    background:#0A0A0A;color:#F0F0F0;text-align:center;padding:1rem;">
-    <div style="font-size:clamp(3rem,12vw,6rem);letter-spacing:0.15em;font-weight:900;">VRDB</div>
-    <p style="opacity:0.6;margin-top:0.5rem;">A movie &amp; TV backlog for two.</p>
-    <p style="opacity:0.3;margin-top:2rem;font-size:0.8rem;">Phase 0 — scaffold</p>
+
+  <!-- ── Name picker (first visit) ── -->
+  <div id="name-picker" class="name-picker hidden">
+    <div class="name-picker__logo">VRDB</div>
+    <p class="name-picker__tagline">A movie &amp; TV backlog for two.</p>
+    <p class="name-picker__prompt">Who's this?</p>
+    <div class="name-picker__choices"></div>
+  </div>
+
+  <!-- ── Main app ── -->
+  <main id="app" class="app hidden">
+
+    <!-- Discover -->
+    <section class="screen" data-screen="discover">
+      <header class="screen__header">
+        <div>
+          <h1 class="screen__title">Discover</h1>
+          <p class="screen__sub">Trending · For Us · For You · Surprise Me</p>
+        </div>
+      </header>
+      <div class="empty-state">
+        <div class="empty-state__emoji">🎬</div>
+        <div>Coming in Phase 4 — card swiping.</div>
+      </div>
+    </section>
+
+    <!-- Partner -->
+    <section class="screen" data-screen="partner">
+      <header class="screen__header">
+        <div>
+          <h1 class="screen__title">Partner</h1>
+          <p class="screen__sub">Swipe on what they added.</p>
+        </div>
+      </header>
+      <div class="empty-state">
+        <div class="empty-state__emoji">💞</div>
+        <div id="partner-empty">Your partner hasn't added anything yet.</div>
+      </div>
+    </section>
+
+    <!-- Shared -->
+    <section class="screen" data-screen="shared">
+      <header class="screen__header">
+        <div>
+          <h1 class="screen__title">Shared</h1>
+          <p class="screen__sub">Things you both want to watch.</p>
+        </div>
+      </header>
+      <div class="empty-state">
+        <div class="empty-state__emoji">⭐</div>
+        <div id="shared-empty">No matches yet — start swiping!</div>
+      </div>
+    </section>
+
+    <!-- Mine -->
+    <section class="screen" data-screen="mine">
+      <header class="screen__header">
+        <div>
+          <h1 class="screen__title">Mine</h1>
+          <p class="screen__sub">Your backlog.</p>
+        </div>
+        <button id="settings-btn" class="icon-btn" aria-label="Settings" title="Settings">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+      </header>
+      <div class="empty-state">
+        <div class="empty-state__emoji">📚</div>
+        <div id="mine-empty">Search to add your first title.</div>
+      </div>
+    </section>
+
+    <!-- Bottom nav -->
+    <nav class="bottom-nav" role="tablist" aria-label="Main">
+      <button class="tab-btn" data-tab="discover" role="tab" aria-selected="false">
+        <span class="tab-btn__icon">🎬</span><span>Discover</span>
+      </button>
+      <button class="tab-btn" data-tab="partner"  role="tab" aria-selected="false">
+        <span class="tab-btn__icon">💞</span><span>Partner</span>
+      </button>
+      <button class="tab-btn" data-tab="shared"   role="tab" aria-selected="false">
+        <span class="tab-btn__icon">⭐</span><span>Shared</span>
+      </button>
+      <button class="tab-btn" data-tab="mine"     role="tab" aria-selected="false">
+        <span class="tab-btn__icon">📚</span><span>Mine</span>
+      </button>
+    </nav>
+
   </main>
+
+  <!-- ── Settings sheet ── -->
+  <div id="settings-sheet" class="sheet hidden" role="dialog" aria-modal="true">
+    <div class="sheet__panel">
+      <h2 class="sheet__title">Settings</h2>
+
+      <div class="sheet__row">
+        <span class="sheet__label">Theme</span>
+        <div class="segmented" role="group" aria-label="Theme">
+          <button class="segmented__btn" data-theme-mode="system" aria-pressed="false">System</button>
+          <button class="segmented__btn" data-theme-mode="light"  aria-pressed="false">Light</button>
+          <button class="segmented__btn" data-theme-mode="dark"   aria-pressed="false">Dark</button>
+        </div>
+      </div>
+
+      <div class="sheet__row">
+        <span class="sheet__label">Switch user</span>
+        <button id="switch-user-btn" class="segmented__btn" style="background: var(--surface-2);">Switch</button>
+      </div>
+
+      <button id="settings-close" class="sheet__close" type="button">Close</button>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>
