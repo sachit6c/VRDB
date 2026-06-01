@@ -39,13 +39,13 @@
       <div id="discover-stack" class="card-stack hidden"></div>
       <div id="discover-empty" class="empty-state">Loading…</div>
       <div id="discover-hint" class="discover-hint hidden">
-        ← Hell no &nbsp;·&nbsp; ↑ Later &nbsp;·&nbsp; → Want now &nbsp;·&nbsp; ↓ Watched
+        ← Hell no &nbsp;·&nbsp; ↑ Later &nbsp;·&nbsp; → Watch now &nbsp;·&nbsp; ↓ Watched
       </div>
       <div id="discover-actions" class="discover-actions hidden" role="group" aria-label="Swipe actions">
         <button type="button" data-action="left"  class="action-btn action-btn--no"     aria-label="Hell no">✕</button>
         <button type="button" data-action="down"  class="action-btn action-btn--watched" aria-label="Watched">👁</button>
-        <button type="button" data-action="up"    class="action-btn action-btn--later"   aria-label="Want later">⏰</button>
-        <button type="button" data-action="right" class="action-btn action-btn--yes"     aria-label="Want now">♥</button>
+        <button type="button" data-action="up"    class="action-btn action-btn--later"   aria-label="Watch later">⏰</button>
+        <button type="button" data-action="right" class="action-btn action-btn--yes"     aria-label="Watch now">♥</button>
       </div>
     </section>
 
@@ -54,12 +54,22 @@
       <header class="screen__header">
         <div>
           <h1 class="screen__title">Partner</h1>
-          <p class="screen__sub">Swipe on what they added.</p>
+          <p class="screen__sub" id="partner-label">What they added</p>
         </div>
       </header>
-      <div class="empty-state">
+      <div id="partner-stack" class="card-stack hidden"></div>
+      <div id="partner-empty-wrap" class="empty-state">
         <div class="empty-state__emoji">💞</div>
-        <div id="partner-empty">Your partner hasn't added anything yet.</div>
+        <div data-msg id="partner-empty">Your partner hasn't added anything yet.</div>
+      </div>
+      <div id="partner-hint" class="discover-hint hidden">
+        ← Hell no &nbsp;·&nbsp; ↑ Later &nbsp;·&nbsp; → Watch now &nbsp;·&nbsp; ↓ Watched
+      </div>
+      <div id="partner-actions" class="discover-actions hidden" role="group" aria-label="Swipe actions">
+        <button type="button" data-action="left"  class="action-btn action-btn--no"     aria-label="Hell no">✕</button>
+        <button type="button" data-action="down"  class="action-btn action-btn--watched" aria-label="Watched">👁</button>
+        <button type="button" data-action="up"    class="action-btn action-btn--later"   aria-label="Watch later">⏰</button>
+        <button type="button" data-action="right" class="action-btn action-btn--yes"     aria-label="Watch now">♥</button>
       </div>
     </section>
 
@@ -71,10 +81,11 @@
           <p class="screen__sub">Things you both want to watch.</p>
         </div>
       </header>
-      <div class="empty-state">
+      <div id="shared-empty-wrap" class="empty-state">
         <div class="empty-state__emoji">⭐</div>
-        <div id="shared-empty">No matches yet — start swiping!</div>
+        <div data-msg id="shared-empty">No matches yet — swipe to find common ground!</div>
       </div>
+      <div id="shared-list" class="shared-list hidden"></div>
     </section>
 
     <!-- Mine -->

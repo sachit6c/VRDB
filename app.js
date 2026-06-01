@@ -5,6 +5,8 @@ import { applyStoredTheme, getTheme, setTheme } from './lib/theme.js';
 import { initRouter } from './lib/router.js';
 import { initMine, refreshMine } from './lib/mine.js';
 import { initDiscover, refreshDiscover } from './lib/discover.js';
+import { initPartner, refreshPartner } from './lib/partner.js';
+import { initShared, refreshShared } from './lib/shared.js';
 import { initSearchModal } from './lib/search-modal.js';
 import { initDetailSheet } from './lib/detail-sheet.js';
 
@@ -52,11 +54,13 @@ function bootApp() {
   initRouter();
   wireSettings();
 
-  const refreshAll = () => { refreshMine(); refreshDiscover(); };
+  const refreshAll = () => { refreshMine(); refreshDiscover(); refreshPartner(); refreshShared(); };
   initSearchModal({ onAdded: refreshAll });
   initDetailSheet({ onChange: refreshAll });
   initMine();
   initDiscover();
+  initPartner();
+  initShared();
 }
 
 function setEmptyState(id, text) {

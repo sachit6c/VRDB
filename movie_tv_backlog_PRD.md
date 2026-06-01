@@ -52,8 +52,8 @@ Every title in the system has a state **per user**. Defaults to `unseen` (no int
 
 | State | Meaning |
 |---|---|
-| `want_now` | High priority — want to watch soon |
-| `want_later` | Interested, not urgent |
+| `watch_now` | High priority — want to watch soon |
+| `watch_later` | Interested, not urgent |
 | `hell_no` | Not interested, hide from suggestions |
 | `watched` | This user has personally seen it (alone or before pairing) |
 | `unseen` | Default — no action taken |
@@ -96,9 +96,9 @@ Applied uniformly on all card surfaces (partner's backlog, suggestion feeds, sea
 
 | Gesture | Action |
 |---|---|
-| Swipe **right** | Set state to `want_later` |
+| Swipe **right** | Set state to `watch_later` |
 | Swipe **left** | Set state to `hell_no` |
-| Swipe **up** | Set state to `want_now` |
+| Swipe **up** | Set state to `watch_now` |
 | Swipe **down** | Set state to `watched` (personal — "I've seen it") |
 | Single tap | Open detail modal (no state change) |
 | Double tap | Play trailer (TMDB → YouTube) |
@@ -115,8 +115,8 @@ Applied uniformly on all card surfaces (partner's backlog, suggestion feeds, sea
 ## Swiping & Matching Logic
 
 - All swiping happens on **card surfaces** — not on your own backlog (own backlog uses tap-to-edit).
-- A **match** occurs when both partners have state ∈ {`want_now`, `want_later`} on the same title.
-- **Default sort on shared list:** Items where *either* partner has `want_now` rank higher than items where both have `want_later`. Within each tier, newest matches first. Users can still manually reorder.
+- A **match** occurs when both partners have state ∈ {`watch_now`, `watch_later`} on the same title.
+- **Default sort on shared list:** Items where *either* partner has `watch_now` rank higher than items where both have `watch_later`. Within each tier, newest matches first. Users can still manually reorder.
 - Matches appear in the **Shared Matched List** — discovered when opening the shared list (no push notification).
 - If both partners independently mark a title `watched`, the shared list auto-promotes it to **"Watched Together"** (no prompt needed).
 - If one partner has `watched` and the other has a `want_*` state, no match; the wanting partner sees a subtle note on the card: "Your partner has seen this."
@@ -138,7 +138,7 @@ Applied uniformly on all card surfaces (partner's backlog, suggestion feeds, sea
 ### Algorithm
 Pure TMDB API — no ML, no backend service.
 
-- **For You (Personal):** For each title in the user's `want_now`, `want_later`, or `watched` lists, fetch TMDB's `/recommendations` and `/similar` endpoints. Pool results, dedupe, score by frequency. Filter out anything the user has already interacted with and anything either partner marked `hell_no`.
+- **For You (Personal):** For each title in the user's `watch_now`, `watch_later`, or `watched` lists, fetch TMDB's `/recommendations` and `/similar` endpoints. Pool results, dedupe, score by frequency. Filter out anything the user has already interacted with and anything either partner marked `hell_no`.
 - **For Us (Partnership):** Run the same algorithm for both partners separately, then rank by titles that appear in **both** pools. Tiebreak on combined frequency score.
 - **Trending:** TMDB `/trending/all/week`, filtered for `hell_no` exclusions from either partner.
 - **Surprise Me:** Pick a genre that is underrepresented in the combined backlogs of both partners. Surface a top-rated TMDB title in that genre that neither partner has interacted with.
@@ -233,7 +233,7 @@ In-app only (no push). Computed on app open:
 7. **Movie sequels / franchises** treated as separate titles per TMDB. No grouping.
 8. **Offline / Supabase down.** Read-only graceful degradation: show last cached state, disable swipes, toast "Connection lost." No offline write queue.
 9. **Multi-device per user.** Same name in localStorage on each device. Supabase realtime keeps them in sync. Last-write-wins per row.
-10. **Search results that already have state.** Display with a state badge ("Already in your backlog: Want Later"). Tap opens detail modal to edit.
+10. **Search results that already have state.** Display with a state badge ("Already in your backlog: Watch Later"). Tap opens detail modal to edit.
 11. **Suggestions daily refresh.** Lazy — on app open, if `generated_at > 24h`, recompute on the client. No backend cron.
 
 ## Visual Identity
@@ -317,7 +317,7 @@ create table titles (
 create table user_title_states (
   user_name    text not null,         -- from config: 'sachit' | 'partner'
   tmdb_id      integer not null,
-  state        text not null,         -- 'want_now' | 'want_later' | 'hell_no' | 'watched'
+  state        text not null,         -- 'watch_now' | 'watch_later' | 'hell_no' | 'watched'
   added_by_me  boolean not null,      -- true if this user added the title to their backlog
   updated_at   timestamptz default now(),
   primary key (user_name, tmdb_id),
@@ -343,7 +343,7 @@ create table suggestions_cache (
 ### Derived Concepts (not stored)
 - **My Backlog** = titles where I have `added_by_me = true` OR any non-`hell_no` state.
 - **Partner's Backlog (swipe surface)** = titles where partner has `added_by_me = true` AND I have no state yet.
-- **Match** = both partners have state ∈ {`want_now`, `want_later`} on the same `tmdb_id`.
+- **Match** = both partners have state ∈ {`watch_now`, `watch_later`} on the same `tmdb_id`.
 - **Watched Together** = both partners have `state = 'watched'` on the same `tmdb_id`.
 - **Rejected list (per partner)** = titles where that partner has `state = 'hell_no'`.
 
