@@ -900,3 +900,60 @@ button {
   height: 88px;
   margin: 8px 0;
 }
+
+/* ── Watch providers (detail sheet) ─────────────────────── */
+.detail__providers {
+  margin: 0.75rem 0 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--surface-2);
+}
+.detail__providers-heading {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  letter-spacing: 0.02em;
+}
+.detail__providers-region {
+  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+.detail__providers-status {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+}
+.detail__providers-group {
+  margin: 0.5rem 0;
+}
+.detail__providers-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  margin-bottom: 0.35rem;
+}
+.detail__providers-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.detail__provider img {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  display: block;
+  background: var(--surface-2);
+}
+.detail__providers-attr {
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+.detail__providers-link {
+  color: var(--accent);
+  margin-left: 0.35rem;
+  text-decoration: none;
+}
