@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "start": "npx serve .",
+    "test": "node --test --experimental-test-module-mocks",
     "db:migrate": "node scripts/db-migrate.mjs"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "postgres": "^3.4.4"
   }
 }
