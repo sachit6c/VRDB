@@ -19,12 +19,22 @@
 </head>
 <body>
 
-  <!-- ── Name picker (first visit) ── -->
+  <!-- ── Login (first visit) ── -->
   <div id="name-picker" class="name-picker hidden">
     <div class="name-picker__logo">VRDB</div>
     <p class="name-picker__tagline">A movie &amp; TV backlog for two.</p>
-    <p class="name-picker__prompt">Who's this?</p>
-    <div class="name-picker__choices"></div>
+    <form id="login-form" class="login-form" autocomplete="off" novalidate>
+      <div class="login-field">
+        <label for="login-username">Username</label>
+        <input id="login-username" name="username" type="text" placeholder="Akshita" autocomplete="off" autocapitalize="words" spellcheck="false">
+      </div>
+      <div class="login-field">
+        <label for="login-password">Password</label>
+        <input id="login-password" name="password" type="password" placeholder="Soumit" autocomplete="off" autocapitalize="words" spellcheck="false">
+      </div>
+      <p id="login-error" class="login-error" role="alert" aria-live="polite"></p>
+      <button type="submit" class="login-submit">Log in</button>
+    </form>
   </div>
 
   <!-- ── Main app ── -->

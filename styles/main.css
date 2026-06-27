@@ -43,10 +43,13 @@ button {
 
 .name-picker__logo {
   font-family: var(--font-display);
-  font-size: clamp(4rem, 18vw, 7rem);
+  font-size: clamp(3rem, 14vw, 7rem);
   letter-spacing: 0.15em;
+  /* trailing letter-spacing adds space on the right; pad the left to keep it centered */
+  padding-left: 0.15em;
   line-height: 1;
   color: var(--accent);
+  max-width: 100%;
 }
 
 .name-picker__tagline {
@@ -84,6 +87,71 @@ button {
 
 .name-picker__btn:hover { background: var(--surface-2); }
 .name-picker__btn:active { transform: scale(0.97); }
+
+/* ── Login form ──────────────────────────────────────────────── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 320px;
+}
+
+.login-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  text-align: left;
+}
+
+.login-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--text-dim);
+}
+
+.login-field input {
+  font-family: inherit;
+  font-size: 1.05rem;
+  padding: 0.85rem 1rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  width: 100%;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.login-field input::placeholder { color: var(--text-dim); opacity: 0.6; }
+
+.login-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--surface-2);
+}
+
+.login-error {
+  font-size: 0.85rem;
+  color: #e5484d;
+  margin: -0.25rem 0 0;
+  min-height: 1.1em;
+  text-align: left;
+}
+
+.login-submit {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  padding: 0.9rem 1.5rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 12px;
+  transition: transform 0.1s, filter 0.15s;
+}
+
+.login-submit:hover { filter: brightness(1.05); }
+.login-submit:active { transform: scale(0.97); }
 
 /* ── App shell ──────────────────────────────────────────────── */
 .app {

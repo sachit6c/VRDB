@@ -1,6 +1,6 @@
 // app.js — VRDB entry point.
 
-import { getMe, setMe, getPartner, clearMe, PARTNERS } from './lib/identity.js';
+import { getMe, getPartner, clearMe, login } from './lib/identity.js';
 import { applyStoredTheme, getTheme, setTheme } from './lib/theme.js';
 import { initRouter } from './lib/router.js';
 import { initMine, refreshMine } from './lib/mine.js';
@@ -17,31 +17,38 @@ wireConnectionToasts();
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!getMe()) {
-    showNamePicker();
+    showLogin();
   } else {
     bootApp();
   }
 });
 
-function showNamePicker() {
+function showLogin() {
   const overlay = document.getElementById('name-picker');
-  const choices = overlay.querySelector('.name-picker__choices');
+  const form = document.getElementById('login-form');
+  const usernameInput = document.getElementById('login-username');
+  const passwordInput = document.getElementById('login-password');
+  const errorEl = document.getElementById('login-error');
 
-  choices.innerHTML = '';
-  PARTNERS.forEach((name) => {
-    const btn = document.createElement('button');
-    btn.className = 'name-picker__btn';
-    btn.type = 'button';
-    btn.textContent = name;
-    btn.addEventListener('click', () => {
-      setMe(name);
-      overlay.classList.add('hidden');
-      bootApp();
-    });
-    choices.appendChild(btn);
+  const clearError = () => { errorEl.textContent = ''; };
+  usernameInput.addEventListener('input', clearError);
+  passwordInput.addEventListener('input', clearError);
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const me = login(usernameInput.value, passwordInput.value);
+    if (!me) {
+      errorEl.textContent = 'Incorrect username or password.';
+      passwordInput.value = '';
+      passwordInput.focus();
+      return;
+    }
+    overlay.classList.add('hidden');
+    bootApp();
   });
 
   overlay.classList.remove('hidden');
+  usernameInput.focus();
 }
 
 function bootApp() {
@@ -95,7 +102,7 @@ function wireSettings() {
   });
 
   switchUserBtn?.addEventListener('click', () => {
-    if (confirm('Switch user? You will be asked to pick your name again.')) {
+    if (confirm('Log out? You will need to log in again.')) {
       clearMe();
       location.reload();
     }
