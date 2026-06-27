@@ -183,13 +183,13 @@ test('✕ button closes', () => {
   assert.equal(sheet.classList.contains('hidden'), true);
 });
 
-test('backdrop click closes, inner click does not', () => {
+test('backdrop press closes, inner press does not', () => {
   open(entry());
-  // click on the panel bubbles to the sheet but target != sheet → stays open
-  panel.dispatchEvent(new window.Event('click', { bubbles: true }));
+  // pointerdown on the panel bubbles to the sheet but target != sheet → stays open
+  panel.dispatchEvent(new window.Event('pointerdown', { bubbles: true }));
   assert.equal(sheet.classList.contains('hidden'), false);
-  // click whose target is the sheet itself → closes
-  sheet.dispatchEvent(new window.Event('click', { bubbles: true }));
+  // pointerdown whose target is the sheet itself → closes
+  sheet.dispatchEvent(new window.Event('pointerdown', { bubbles: true }));
   assert.equal(sheet.classList.contains('hidden'), true);
 });
 

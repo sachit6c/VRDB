@@ -28,12 +28,16 @@ test('renders up to 3 cards, top first in DOM stacking', () => {
   assert.equal(container.querySelector('.card:last-child').dataset.tmdbId, '1'); // top is appended last
 });
 
-test('renders poster, title, meta and overview', () => {
+test('renders poster, title and meta overlaid on the poster', () => {
   mount([movie(1)]);
   assert.ok(container.querySelector('.card__poster img'));
-  assert.equal(container.querySelector('.card__title').textContent, 'M1');
-  assert.match(container.querySelector('.card__sub').textContent, /Movie/);
-  assert.ok(container.querySelector('.card__overview'));
+  // Title + meta now live inside the poster overlay, not a separate meta block.
+  const info = container.querySelector('.card__poster .card__info');
+  assert.ok(info);
+  assert.equal(info.querySelector('.card__title').textContent, 'M1');
+  assert.match(info.querySelector('.card__sub').textContent, /Movie/);
+  // Description is intentionally omitted from the card (shown in the detail sheet).
+  assert.equal(container.querySelector('.card__overview'), null);
 });
 
 test('poster falls back to emoji when no path', () => {

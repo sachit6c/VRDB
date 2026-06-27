@@ -27,11 +27,11 @@
     <form id="setup-form" class="setup-form" autocomplete="off" novalidate>
       <div class="setup-field">
         <label for="setup-my-name">Your name</label>
-        <input id="setup-my-name" type="text" placeholder="Akshita" maxlength="30" autocomplete="off" autocapitalize="words" spellcheck="false">
+        <input id="setup-my-name" type="text" placeholder="Your name" maxlength="30" autocomplete="off" autocapitalize="words" spellcheck="false">
       </div>
       <div class="setup-field">
         <label for="setup-partner-name">Partner's name</label>
-        <input id="setup-partner-name" type="text" placeholder="Soumit" maxlength="30" autocomplete="off" autocapitalize="words" spellcheck="false">
+        <input id="setup-partner-name" type="text" placeholder="Partner's name" maxlength="30" autocomplete="off" autocapitalize="words" spellcheck="false">
       </div>
       <button type="submit" class="setup-submit" disabled>Let's go</button>
     </form>
@@ -42,22 +42,18 @@
 
     <!-- Discover -->
     <section class="screen" data-screen="discover" id="screen-discover" role="tabpanel" aria-labelledby="tab-discover">
-      <header class="screen__header">
-        <div>
-          <h1 class="screen__title">Discover</h1>
-          <p class="screen__sub" id="discover-sub">Trending this week</p>
+      <div class="discover-toolbar">
+        <div class="segmented segmented--tabs" role="tablist" aria-label="Discover surfaces">
+          <button class="segmented__btn" data-surface="trending"   role="tab" aria-selected="true">Trending</button>
+          <button class="segmented__btn" data-surface="for_us"     role="tab" aria-selected="false">For us</button>
+          <button class="segmented__btn" data-surface="for_you"    role="tab" aria-selected="false">For you</button>
+          <button class="segmented__btn" data-surface="surprise"   role="tab" aria-selected="false">Surprise</button>
         </div>
-        <button id="discover-refresh" class="icon-btn" aria-label="Refresh suggestions" title="Refresh">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"/>
+        <button id="discover-refresh" class="icon-btn toolbar-icon-btn" aria-label="Refresh suggestions" title="Refresh">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 2v6h-6"/><path d="M21 13a9 9 0 1 1-3-7.7L21 8"/>
           </svg>
         </button>
-      </header>
-      <div class="segmented segmented--tabs" role="tablist" aria-label="Discover surfaces">
-        <button class="segmented__btn" data-surface="trending"   role="tab" aria-selected="true">Trending</button>
-        <button class="segmented__btn" data-surface="for_us"     role="tab" aria-selected="false">For us</button>
-        <button class="segmented__btn" data-surface="for_you"    role="tab" aria-selected="false">For you</button>
-        <button class="segmented__btn" data-surface="surprise"   role="tab" aria-selected="false">Surprise</button>
       </div>
       <div id="discover-stack" class="card-stack hidden"></div>
       <div id="discover-empty" class="empty-state">Loading…</div>
@@ -66,20 +62,18 @@
       </div>
       <div id="discover-actions" class="discover-actions hidden" role="group" aria-label="Swipe actions">
         <button type="button" data-action="left"  class="action-btn action-btn--no"     aria-label="Hell no">✕</button>
-        <button type="button" data-action="down"  class="action-btn action-btn--watched" aria-label="Watched">👁</button>
         <button type="button" data-action="up"    class="action-btn action-btn--later"   aria-label="Watch later">⏰</button>
         <button type="button" data-action="right" class="action-btn action-btn--yes"     aria-label="Watch now">♥</button>
+        <button type="button" data-action="down"  class="action-btn action-btn--watched" aria-label="Watched">👁</button>
       </div>
     </section>
 
     <!-- Partner -->
     <section class="screen" data-screen="partner" id="screen-partner" role="tabpanel" aria-labelledby="tab-partner">
-      <header class="screen__header">
-        <div>
-          <h1 class="screen__title">Partner</h1>
-          <p class="screen__sub" id="partner-label">What they added</p>
-        </div>
-      </header>
+      <div class="partner-toolbar">
+        <p class="screen__partner-label" id="partner-label">What they added</p>
+        <select id="partner-sort" class="sort-select" aria-label="Sort partner queue"></select>
+      </div>
       <div id="partner-stack" class="card-stack hidden"></div>
       <div id="partner-empty-wrap" class="empty-state">
         <div class="empty-state__emoji">💞</div>
@@ -90,20 +84,17 @@
       </div>
       <div id="partner-actions" class="discover-actions hidden" role="group" aria-label="Swipe actions">
         <button type="button" data-action="left"  class="action-btn action-btn--no"     aria-label="Hell no">✕</button>
-        <button type="button" data-action="down"  class="action-btn action-btn--watched" aria-label="Watched">👁</button>
         <button type="button" data-action="up"    class="action-btn action-btn--later"   aria-label="Watch later">⏰</button>
         <button type="button" data-action="right" class="action-btn action-btn--yes"     aria-label="Watch now">♥</button>
+        <button type="button" data-action="down"  class="action-btn action-btn--watched" aria-label="Watched">👁</button>
       </div>
     </section>
 
     <!-- Shared -->
     <section class="screen" data-screen="shared" id="screen-shared" role="tabpanel" aria-labelledby="tab-shared">
-      <header class="screen__header">
-        <div>
-          <h1 class="screen__title">Shared</h1>
-          <p class="screen__sub">Things you both want to watch.</p>
-        </div>
-      </header>
+      <div class="shared-toolbar">
+        <select id="shared-sort" class="sort-select" aria-label="Sort shared list"></select>
+      </div>
       <div id="shared-empty-wrap" class="empty-state">
         <div class="empty-state__emoji">⭐</div>
         <div data-msg id="shared-empty">No matches yet — swipe to find common ground!</div>
@@ -113,18 +104,20 @@
 
     <!-- Mine -->
     <section class="screen" data-screen="mine" id="screen-mine" role="tabpanel" aria-labelledby="tab-mine">
-      <header class="screen__header">
-        <div>
-          <h1 class="screen__title">Mine</h1>
-          <p class="screen__sub">Your backlog.</p>
+      <div class="mine-toolbar">
+        <div class="segmented segmented--tabs" id="mine-filter" role="tablist" aria-label="My backlog filter">
+          <button class="segmented__btn" data-state="watch_now"   role="tab" aria-selected="true">Now</button>
+          <button class="segmented__btn" data-state="watch_later" role="tab" aria-selected="false">Later</button>
+          <button class="segmented__btn" data-state="watched"     role="tab" aria-selected="false">Watched</button>
+          <button class="segmented__btn" data-state="hell_no"     role="tab" aria-selected="false">Hell No</button>
         </div>
-        <button id="settings-btn" class="icon-btn" aria-label="Settings" title="Settings">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        <select id="mine-sort" class="sort-select" aria-label="Sort my backlog"></select>
+        <button id="settings-btn" class="icon-btn toolbar-icon-btn" aria-label="Settings" title="Settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
           </svg>
         </button>
-      </header>
+      </div>
       <div id="mine-empty-wrap" class="empty-state">
         <div class="empty-state__emoji">📚</div>
         <div id="mine-empty">Search to add your first title.</div>
@@ -136,16 +129,32 @@
     <!-- Bottom nav -->
     <nav class="bottom-nav" role="tablist" aria-label="Main">
       <button class="tab-btn" data-tab="discover" id="tab-discover" role="tab" aria-selected="false" aria-controls="screen-discover">
-        <span class="tab-btn__icon">🎬</span><span>Discover</span>
+        <span class="tab-btn__icon">
+          <svg class="icon-outline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+          <svg class="icon-filled" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm2.19 12.19L6 18l3.81-8.19L18 6l-3.81 8.19z"/></svg>
+        </span>
+        <span>Discover</span>
       </button>
-      <button class="tab-btn" data-tab="partner"  id="tab-partner" role="tab" aria-selected="false" aria-controls="screen-partner">
-        <span class="tab-btn__icon">💞</span><span>Partner</span>
+      <button class="tab-btn" data-tab="partner" id="tab-partner" role="tab" aria-selected="false" aria-controls="screen-partner">
+        <span class="tab-btn__icon">
+          <svg class="icon-outline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <svg class="icon-filled" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </span>
+        <span>Partner</span>
       </button>
-      <button class="tab-btn" data-tab="shared"   id="tab-shared" role="tab" aria-selected="false" aria-controls="screen-shared">
-        <span class="tab-btn__icon">⭐</span><span>Shared</span>
+      <button class="tab-btn" data-tab="shared" id="tab-shared" role="tab" aria-selected="false" aria-controls="screen-shared">
+        <span class="tab-btn__icon">
+          <svg class="icon-outline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg class="icon-filled" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </span>
+        <span>Shared</span>
       </button>
-      <button class="tab-btn" data-tab="mine"     id="tab-mine" role="tab" aria-selected="false" aria-controls="screen-mine">
-        <span class="tab-btn__icon">📚</span><span>Mine</span>
+      <button class="tab-btn" data-tab="mine" id="tab-mine" role="tab" aria-selected="false" aria-controls="screen-mine">
+        <span class="tab-btn__icon">
+          <svg class="icon-outline" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          <svg class="icon-filled" width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="3" y="4.7" width="18" height="2.8" rx="1.4"/><rect x="3" y="10.6" width="18" height="2.8" rx="1.4"/><rect x="3" y="16.5" width="18" height="2.8" rx="1.4"/></svg>
+        </span>
+        <span>Mine</span>
       </button>
     </nav>
 

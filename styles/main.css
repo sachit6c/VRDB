@@ -170,25 +170,98 @@ button {
 
 .screen.is-active { display: flex; }
 
-.screen__header {
+.screen__toolbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+  justify-content: flex-end;
+  margin-bottom: 0.5rem;
 }
 
-.screen__title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 7vw, 2.75rem);
-  letter-spacing: 0.08em;
-  line-height: 1;
-  margin: 0;
+/* Discover: segmented tabs + refresh on one row */
+.discover-toolbar,
+.mine-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
-.screen__sub {
+.discover-toolbar .segmented--tabs,
+.mine-toolbar .segmented--tabs {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.toolbar-icon-btn {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--surface-2);
   color: var(--text-dim);
-  font-size: 0.9rem;
-  margin: 0.25rem 0 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.toolbar-icon-btn:hover {
+  background: color-mix(in srgb, var(--accent) 15%, var(--surface-2));
+  color: var(--accent);
+}
+
+.screen__partner-label {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin: 0 0 0.75rem;
+}
+
+/* Sort control shared across the Mine / Shared / Partner list toolbars. */
+.sort-select {
+  flex-shrink: 0;
+  height: 36px;
+  max-width: 9.5rem;
+  padding: 0 1.75rem 0 0.6rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  /* chevron */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.sort-select:hover {
+  background-color: color-mix(in srgb, var(--accent) 15%, var(--surface-2));
+}
+
+.sort-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Shared / Partner toolbars: right-align the sort control on one row. */
+.shared-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.partner-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.partner-toolbar .screen__partner-label {
+  flex: 1;
+  margin: 0;
 }
 
 .empty-state {
@@ -234,6 +307,7 @@ button {
 }
 
 .tab-btn {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -246,13 +320,42 @@ button {
   transition: color 0.15s;
 }
 
-.tab-btn__icon {
-  font-size: 1.4rem;
-  line-height: 1;
+/* Active indicator: a short gold bar flush with the top edge of the nav. */
+.tab-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 28px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--accent);
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
+
+.tab-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 28px;
+}
+
+/* Icon swap: outline when idle, filled when the tab is selected. */
+.tab-btn__icon .icon-filled { display: none; }
+.tab-btn[aria-selected="true"] .icon-outline { display: none; }
+.tab-btn[aria-selected="true"] .icon-filled { display: block; }
 
 .tab-btn[aria-selected="true"] {
   color: var(--accent);
+}
+
+.tab-btn[aria-selected="true"]::before {
+  transform: translateX(-50%) scaleX(1);
+  opacity: 1;
 }
 
 /* ── Settings sheet ─────────────────────────────────────────── */
@@ -349,7 +452,7 @@ button {
 .segmented--tabs {
   display: flex;
   width: 100%;
-  margin: 0 0 0.75rem;
+  margin: 0;
 }
 .segmented--tabs .segmented__btn {
   flex: 1 1 0;
@@ -357,6 +460,7 @@ button {
   font-size: 0.85rem;
   white-space: nowrap;
 }
+
 
 .sheet__save {
   display: block;
@@ -764,13 +868,17 @@ button {
   perspective: 1000px;
   user-select: none;
   -webkit-user-select: none;
-  overflow: hidden;
 }
 
 .card {
   position: absolute;
-  width: min(85vw, 360px);
-  max-height: 70vh;
+  /* The largest 2 : 3 poster that fits the available stack area. The value is
+     computed in card-stack.js (sizeCards) from the stack's measured width and
+     height and set as --card-w, so the card scales up on an iPad and stays
+     snug on a phone — always a true 2 : 3, never cropped or letterboxed. The
+     fallback keeps it sane before/without JS. */
+  width: var(--card-w, min(90vw, 360px));
+  aspect-ratio: 2 / 3;
   background: var(--surface);
   border-radius: 16px;
   overflow: hidden;
@@ -789,10 +897,9 @@ button {
 
 .card__poster {
   position: relative;
-  aspect-ratio: 2 / 3;
-  /* Cap the poster on short/landscape viewports so the title + meta below it
-     always stay within the card's max-height instead of being clipped. */
-  max-height: 52vh;
+  /* The poster fills the whole (already 2 : 3) card. */
+  width: 100%;
+  height: 100%;
   background: var(--surface-2);
   overflow: hidden;
 }
@@ -818,7 +925,10 @@ button {
 .card__overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 40%);
+  background: linear-gradient(to top,
+    rgba(0,0,0,0.88) 0%,
+    rgba(0,0,0,0.55) 22%,
+    transparent 55%);
   pointer-events: none;
 }
 
@@ -845,33 +955,31 @@ button {
 .card__decision[data-dir="up"]    { background: #3a78d4; }
 .card__decision[data-dir="down"]  { background: #8e6e2e; }
 
-.card__meta {
-  padding: 0.85rem 1rem 1rem;
+/* Title + rating overlaid on the poster, sitting above the black fade. */
+.card__info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem 1.1rem 1.1rem;
+  z-index: 1;
+  pointer-events: none;
 }
 
 .card__title {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: 1.5rem;
   letter-spacing: 0.04em;
-  line-height: 1.15;
-  margin: 0 0 0.25rem;
+  line-height: 1.1;
+  margin: 0 0 0.2rem;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .card__sub {
-  font-size: 0.8rem;
-  color: var(--text-dim);
-  margin-bottom: 0.5rem;
-}
-
-.card__overview {
   font-size: 0.85rem;
-  line-height: 1.4;
-  color: var(--text);
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
 }
 
 .discover-hint {

@@ -36,12 +36,17 @@ const entry = (state, id, over = {}) => ({
   state, addedByMe: false, updatedAt: 't',
   title: { tmdb_id: id, media_type: 'movie', title: `T${id}`, poster_path: `/p${id}.jpg`, ...over },
 });
+const filterTab = (state) => document.querySelector(`#mine-filter [data-state="${state}"]`);
 
 beforeEach(() => {
   backlog = [];
   backlogError = null;
   openCount = 0;
   lastOpened = null;
+  // activeState is module-level and persists across tests; reset to the
+  // default ("Now") filter so each test starts from a known state.
+  const now = filterTab('watch_now');
+  if (now.getAttribute('aria-selected') !== 'true') now.click();
 });
 
 test('empty backlog shows empty state, hides+clears list', async () => {
@@ -51,26 +56,31 @@ test('empty backlog shows empty state, hides+clears list', async () => {
   assert.equal(listEl.innerHTML, '');
 });
 
-test('renders only non-empty sections in WATCH_NOW → LATER → WATCHED order', async () => {
+test('shows only the active filter, and switching filters re-renders', async () => {
   backlog = [
     entry('watched', 1),
     entry('watch_now', 2),
-    entry('hell_no', 3),   // ignored
-    entry('unseen', 4),    // ignored
+    entry('hell_no', 3),
     entry('watch_now', 5),
   ];
   await mine.refreshMine();
+
+  // Default filter is "Now": only the two watch_now entries render.
   assert.equal(emptyEl.classList.contains('hidden'), true);
   assert.equal(listEl.classList.contains('hidden'), false);
+  let cards = [...listEl.querySelectorAll('.backlog-card')];
+  assert.deepEqual(cards.map((c) => c.dataset.state), ['watch_now', 'watch_now']);
 
-  const sections = [...listEl.querySelectorAll('.backlog-section')];
-  // watch_later has no entries -> omitted; order is now, watched
-  assert.deepEqual(sections.map((s) => s.dataset.state), ['watch_now', 'watched']);
-  // counts
-  const nowSection = sections[0];
-  assert.match(nowSection.querySelector('.backlog-section__header').textContent, /Watch now/);
-  assert.equal(nowSection.querySelector('.backlog-section__count').textContent, '2');
-  assert.equal(listEl.querySelectorAll('.backlog-card').length, 3); // 2 now + 1 watched
+  // Switch to "Watched": only the single watched entry renders.
+  filterTab('watched').click();
+  cards = [...listEl.querySelectorAll('.backlog-card')];
+  assert.deepEqual(cards.map((c) => c.dataset.state), ['watched']);
+
+  // Switch to "Later" (no entries): empty state shows, list is hidden.
+  filterTab('watch_later').click();
+  assert.equal(listEl.querySelectorAll('.backlog-card').length, 0);
+  assert.equal(emptyEl.classList.contains('hidden'), false);
+  assert.equal(listEl.classList.contains('hidden'), true);
 });
 
 test('card shows title, media label and poster (with emoji fallback)', async () => {

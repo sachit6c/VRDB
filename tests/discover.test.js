@@ -66,7 +66,6 @@ const discover = await import('../lib/discover.js');
 
 const stackEl = () => document.getElementById('discover-stack');
 const emptyEl = () => document.getElementById('discover-empty');
-const subEl = () => document.getElementById('discover-sub');
 const actionsEl = () => document.getElementById('discover-actions');
 const tab = (surface) => document.querySelector(`.segmented--tabs [data-surface="${surface}"]`);
 const flush = () => new Promise((r) => setTimeout(r, 15));
@@ -91,7 +90,6 @@ test('trending mounts a stack and filters out already-stated ids', async () => {
   await discover.refreshDiscover({ force: true });
   const cards = stackEl().querySelectorAll('.card');
   assert.equal(cards.length, 2); // id 2 filtered out
-  assert.equal(subEl().textContent, 'Trending this week');
 });
 
 test('empty trending shows the end-of-deck message', async () => {
@@ -108,7 +106,6 @@ test('for_you cold-start gates with the correct remaining count', async () => {
   assert.match(emptyEl().textContent, /Rate 7 more titles to unlock/);
   assert.equal(stackEl().querySelectorAll('.card').length, 0);
   assert.equal(getForYouCalls, 0);
-  assert.equal(subEl().textContent, 'Picks just for you');
 });
 
 test('cold-start uses singular "title" when one away', async () => {
@@ -133,7 +130,6 @@ test('for_us with a partner loads the couple deck', async () => {
   tab('for_us').click();
   await flush();
   assert.equal(getForUsCalls >= 1, true);
-  assert.equal(subEl().textContent, 'Picks for both of you');
   assert.equal(stackEl().querySelectorAll('.card').length, 1);
 });
 
@@ -142,7 +138,6 @@ test('surprise surface pulls the surprise deck', async () => {
   tab('surprise').click();
   await flush();
   assert.equal(getSurpriseCalls >= 1, true);
-  assert.equal(subEl().textContent, 'A genre you rarely pick');
   assert.equal(stackEl().querySelectorAll('.card').length, 2);
 });
 
