@@ -111,6 +111,24 @@ test('discoverByGenre passes genre + quality filters', async () => {
   resetGlobals();
 });
 
+test('list endpoints tolerate a missing results array', async () => {
+  installFetch(() => ({ body: {} })); // no .results
+  assert.deepEqual(await searchMulti('x'), []);
+  assert.deepEqual(await getTrending(), []);
+  assert.deepEqual(await getRelated({ mediaType: 'movie', id: 1 }), []);
+  assert.deepEqual(await discoverByGenre({ mediaType: 'movie', genreId: 1 }), []);
+  resetGlobals();
+});
+
+test('getWatchProviders defaults missing groups/link', async () => {
+  installFetch(() => ({ body: { results: { US: { flatrate: [{ provider_name: 'Hulu' }] } } } }));
+  const us = await getWatchProviders({ mediaType: 'tv', id: 1 });
+  assert.deepEqual(us.rent, []);   // rent ?? []
+  assert.deepEqual(us.buy, []);    // buy ?? []
+  assert.equal(us.link, null);     // link ?? null
+  resetGlobals();
+});
+
 test('getWatchProviders returns region slice or null', async () => {
   installFetch(() => ({ body: { results: { US: { link: 'x', flatrate: [{ provider_name: 'Netflix' }] } } } }));
   const us = await getWatchProviders({ mediaType: 'movie', id: 1 });
