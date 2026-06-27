@@ -65,8 +65,20 @@ function bootApp() {
   setEmptyState('shared-empty', 'No matches yet — start swiping!');
   setEmptyState('mine-empty', `Welcome, ${me}. Tap ＋ to add your first title.`);
 
-  // Refresh a tab's data whenever the user navigates to it, so freshly-created
-  // matches / swipes show up without a full page reload.
+  wireSettings();
+
+  const refreshAll = () => { refreshMine(); refreshDiscover(); refreshPartner(); refreshShared(); };
+  initSearchModal({ onAdded: refreshAll });
+  initDetailSheet({ onChange: refreshAll });
+
+  // Wire up each screen's DOM + realtime, but don't fetch yet — the router
+  // loads whichever tab actually lands first (and on every later navigation),
+  // so we never fan out four tabs' worth of requests on boot.
+  initMine();
+  initDiscover();
+  initPartner();
+  initShared();
+
   const refreshForTab = {
     discover: refreshDiscover,
     partner:  refreshPartner,
@@ -74,15 +86,6 @@ function bootApp() {
     mine:     refreshMine,
   };
   initRouter({ onChange: (tab) => refreshForTab[tab]?.() });
-  wireSettings();
-
-  const refreshAll = () => { refreshMine(); refreshDiscover(); refreshPartner(); refreshShared(); };
-  initSearchModal({ onAdded: refreshAll });
-  initDetailSheet({ onChange: refreshAll });
-  initMine();
-  initDiscover();
-  initPartner();
-  initShared();
 }
 
 function setEmptyState(id, text) {
