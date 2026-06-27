@@ -54,7 +54,15 @@ function bootApp() {
   setEmptyState('shared-empty', 'No matches yet — start swiping!');
   setEmptyState('mine-empty', `Welcome, ${me}. Tap ＋ to add your first title.`);
 
-  initRouter();
+  // Refresh a tab's data whenever the user navigates to it, so freshly-created
+  // matches / swipes show up without a full page reload.
+  const refreshForTab = {
+    discover: refreshDiscover,
+    partner:  refreshPartner,
+    shared:   refreshShared,
+    mine:     refreshMine,
+  };
+  initRouter({ onChange: (tab) => refreshForTab[tab]?.() });
   wireSettings();
 
   const refreshAll = () => { refreshMine(); refreshDiscover(); refreshPartner(); refreshShared(); };
