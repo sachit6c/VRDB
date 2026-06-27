@@ -79,7 +79,7 @@ Legend: **P** = precondition, **S** = steps, **E** = expected result.
 - E: A card stack of trending movies/TV appears (top card interactive); a loading skeleton shows briefly first. Titles already rated by U1 are excluded.
 
 ### TC-3.2 Swipe directions map to the right state
-- S: On the top card, perform each gesture (drag): right, up, down, left.
+- S: On the top card, perform each gesture (drag or arrow keys): right, up, down, left.
 - E: While dragging past ~half threshold a decision hint label shows; on release the card flies off and the title is saved as:
   - right → **Watch now**
   - up → **Watch later**
@@ -87,53 +87,58 @@ Legend: **P** = precondition, **S** = steps, **E** = expected result.
   - left → **Hell no**
   Verify each by checking the Mine tab / detail sheet afterward.
 
-### TC-3.3 Below-threshold drag snaps back
+### TC-3.3 Keyboard accessibility
+- S: Tab focus onto the top card; use Arrow keys to decide and Enter/Space to open details.
+- E: Arrow keys commit swipes; Enter/Space opens the detail sheet; focus moves to the next card after a keyboard swipe.
+
+### TC-3.4 Below-threshold drag snaps back
 - S: Start dragging the card a small distance (<90px) and release.
 - E: Card animates back to center; no state is saved.
 
-### TC-3.4 Tap opens details (not a swipe)
+### TC-3.5 Tap opens details (not a swipe)
 - S: Quick tap (no drag) on the top card.
 - E: Detail sheet opens for that title; the card stays in the stack.
 
-### TC-3.5 Empty / end-of-deck state
+### TC-3.6 Empty / end-of-deck state
 - S: Swipe through all cards in a surface.
 - E: Friendly "that's all for today / check back / refresh" message; action buttons hidden.
 
-### TC-3.6 Cold-start gating for personalized surfaces
+### TC-3.7 Cold-start gating for personalized surfaces
 - P: U1 has rated fewer than 10 titles.
 - S: Open **For you** (and **For us**).
 - E: Message "Rate N more title(s) to unlock personalized picks" with the correct remaining count; no deck shown.
 
-### TC-3.7 For You after threshold
+### TC-3.8 For You after threshold
 - P: U1 has rated ≥10 titles.
 - S: Open **For you**.
 - E: A personalized deck loads; excludes anything U1 already rated and anything either partner marked Hell no.
 
-### TC-3.8 For Us requires a partner & overlap
+### TC-3.9 For Us requires a partner & overlap
 - P: Both U1 and U2 have ≥10 rated titles with related tastes.
 - S: U1 opens **For us**.
 - E: Deck contains titles relevant to both; excludes each partner's already-rated and both partners' Hell no titles.
 
-### TC-3.9 Surprise Me
+### TC-3.10 Surprise Me
 - S: Open **Surprise me** repeatedly via Refresh.
 - E: Deck pulls from an under-represented genre; sub-label reads "A genre you rarely pick"; excludes Hell no / already-rated.
 
-### TC-3.10 Refresh forces recompute
+### TC-3.11 Refresh forces recompute
 - S: On a suggestion surface, tap the refresh button.
 - E: Deck is recomputed (not served from cache); new/refreshed items appear.
 
-### TC-3.11 Suggestion caching (24h)
+### TC-3.12 Suggestion caching (24h)
 - S: Open For you, note items; switch tabs and return within the day (no refresh).
 - E: Same deck returns quickly from cache (no large TMDB fan-out in Network tab).
 
-### TC-3.12 Action buttons mirror swipes
+### TC-3.13 Action buttons mirror swipes
 - S: Use the on-screen action buttons under the deck instead of dragging.
 - E: Each button flings the top card in the corresponding direction and saves the matching state.
 
-### TC-3.13 Swipe save failure surfaces an error
+### TC-3.14 Swipe save failure surfaces an error
 - P: Simulate the save failing (DevTools offline, or block the Supabase request).
 - S: Swipe the top card in any direction.
 - E: An error toast ("Could not save your swipe.") appears; no silent failure or crash.
+
 
 ---
 
@@ -332,7 +337,7 @@ Legend: **P** = precondition, **S** = steps, **E** = expected result.
 | Theme logic | ✅ `theme.test.js` | TC-8.x |
 | Router state | ✅ `router.test.js` | TC-2.x |
 | Swipe direction & escaping | ✅ `card-stack.test.js` | TC-3.2, TC-9.4 |
-| Suggestion ranking/cache helpers | ✅ `suggestions.test.js` | TC-3.6–3.11 |
+| Suggestion ranking/cache helpers | ✅ `suggestions.test.js` | TC-3.7–3.12 |
 | DB transforms (shared/partner/backlog) | ✅ `db.test.js` | TC-4.x, TC-5.x, TC-6.x |
 | Realtime sync | — | TC-4.4, TC-5.4 |
 | DOM rendering / gestures / sheets | — | TC-3, TC-6, TC-7 |

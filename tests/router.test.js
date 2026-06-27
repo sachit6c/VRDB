@@ -67,10 +67,11 @@ test('initRouter falls back to discover for an invalid stored tab', () => {
   assert.equal(activeScreen(), 'discover');
 });
 
-test('initRouter does not fire onChange on initial landing (each tab self-loads)', () => {
-  let fired = false;
-  initRouter({ onChange: () => { fired = true; } });
-  assert.equal(fired, false);
+test('initRouter fires onChange for the restored tab so it lazy-loads', () => {
+  localStorage.setItem('vrdb.lastTab', 'shared');
+  let got = null;
+  initRouter({ onChange: (t) => { got = t; } });
+  assert.equal(got, 'shared');
 });
 
 test('clicking a tab button navigates and fires onChange', () => {

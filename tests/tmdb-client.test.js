@@ -129,6 +129,7 @@ test('getWatchProviders defaults missing groups/link', async () => {
   resetGlobals();
 });
 
+
 test('getWatchProviders returns region slice or null', async () => {
   installFetch(() => ({ body: { results: { US: { link: 'x', flatrate: [{ provider_name: 'Netflix' }] } } } }));
   const us = await getWatchProviders({ mediaType: 'movie', id: 1 });
