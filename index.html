@@ -41,7 +41,7 @@
   <main id="app" class="app hidden">
 
     <!-- Discover -->
-    <section class="screen" data-screen="discover">
+    <section class="screen" data-screen="discover" id="screen-discover" role="tabpanel" aria-labelledby="tab-discover">
       <header class="screen__header">
         <div>
           <h1 class="screen__title">Discover</h1>
@@ -73,7 +73,7 @@
     </section>
 
     <!-- Partner -->
-    <section class="screen" data-screen="partner">
+    <section class="screen" data-screen="partner" id="screen-partner" role="tabpanel" aria-labelledby="tab-partner">
       <header class="screen__header">
         <div>
           <h1 class="screen__title">Partner</h1>
@@ -97,7 +97,7 @@
     </section>
 
     <!-- Shared -->
-    <section class="screen" data-screen="shared">
+    <section class="screen" data-screen="shared" id="screen-shared" role="tabpanel" aria-labelledby="tab-shared">
       <header class="screen__header">
         <div>
           <h1 class="screen__title">Shared</h1>
@@ -112,7 +112,7 @@
     </section>
 
     <!-- Mine -->
-    <section class="screen" data-screen="mine">
+    <section class="screen" data-screen="mine" id="screen-mine" role="tabpanel" aria-labelledby="tab-mine">
       <header class="screen__header">
         <div>
           <h1 class="screen__title">Mine</h1>
@@ -135,16 +135,16 @@
 
     <!-- Bottom nav -->
     <nav class="bottom-nav" role="tablist" aria-label="Main">
-      <button class="tab-btn" data-tab="discover" role="tab" aria-selected="false">
+      <button class="tab-btn" data-tab="discover" id="tab-discover" role="tab" aria-selected="false" aria-controls="screen-discover">
         <span class="tab-btn__icon">🎬</span><span>Discover</span>
       </button>
-      <button class="tab-btn" data-tab="partner"  role="tab" aria-selected="false">
+      <button class="tab-btn" data-tab="partner"  id="tab-partner" role="tab" aria-selected="false" aria-controls="screen-partner">
         <span class="tab-btn__icon">💞</span><span>Partner</span>
       </button>
-      <button class="tab-btn" data-tab="shared"   role="tab" aria-selected="false">
+      <button class="tab-btn" data-tab="shared"   id="tab-shared" role="tab" aria-selected="false" aria-controls="screen-shared">
         <span class="tab-btn__icon">⭐</span><span>Shared</span>
       </button>
-      <button class="tab-btn" data-tab="mine"     role="tab" aria-selected="false">
+      <button class="tab-btn" data-tab="mine"     id="tab-mine" role="tab" aria-selected="false" aria-controls="screen-mine">
         <span class="tab-btn__icon">📚</span><span>Mine</span>
       </button>
     </nav>
@@ -193,8 +193,8 @@
       </div>
 
       <div class="sheet__row">
-        <span class="sheet__label">Log out</span>
-        <button id="switch-user-btn" class="segmented__btn" style="background: var(--surface-2);">Log out</button>
+        <span class="sheet__label">Account</span>
+        <button id="switch-user-btn" class="sheet__logout">Log out</button>
       </div>
 
       <button id="settings-save" class="sheet__save" type="button">Save</button>
