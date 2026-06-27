@@ -26,6 +26,7 @@ mock.module('../lib/db.js', {
   namedExports: {
     listPartnerQueue: async () => { if (queueError) throw queueError; return queueToReturn; },
     setMyState: async (args) => { recorded.push(args); },
+    getMyState: async () => null,
     STATES,
   },
 });
@@ -78,7 +79,7 @@ test('action buttons map to the correct states (addedByMe=false)', async () => {
   mock.timers.enable({ apis: ['setTimeout'] });
   try {
     queueToReturn = [item(1), item(2), item(3), item(4)];
-    await partner.refreshPartner();
+    await partner.refreshPartner({ force: true });
     const click = (dir) => {
       document.querySelector(`#partner-actions [data-action="${dir}"]`).click();
       mock.timers.tick(300); // let the fling animation finish before the next
@@ -94,8 +95,9 @@ test('action buttons map to the correct states (addedByMe=false)', async () => {
 
 test('tapping a card opens the detail sheet with the cached title', async () => {
   queueToReturn = [item(5)];
-  await partner.refreshPartner();
+  await partner.refreshPartner({ force: true });
   simulateTap(stack().querySelector('.card:last-child'));
+  await new Promise((r) => setTimeout(r, 15));
   assert.ok(lastOpened);
   assert.equal(lastOpened.title, queueToReturn[0]._cachedTitle);
   assert.equal(lastOpened.state, STATES.UNSEEN);
@@ -103,7 +105,7 @@ test('tapping a card opens the detail sheet with the cached title', async () => 
 
 test('load error shows the connection message', async () => {
   queueError = new Error('network');
-  await partner.refreshPartner();
+  await partner.refreshPartner({ force: true });
   assert.match(msg(), /Could not load/);
   assert.equal(stack().classList.contains('hidden'), true);
 });

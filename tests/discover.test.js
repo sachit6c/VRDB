@@ -34,6 +34,7 @@ mock.module('../lib/db.js', {
   namedExports: {
     upsertTitle: async () => {},
     setMyState: async (args) => { setMyStateCalls.push(args); },
+    getMyState: async () => null,
     getMyStatedIds: async () => new Set(statedIds),
     countMyStated: async () => statedCount,
     STATES: { WATCH_NOW: 'watch_now', WATCH_LATER: 'watch_later', WATCHED: 'watched', HELL_NO: 'hell_no', UNSEEN: 'unseen' },
@@ -168,6 +169,7 @@ test('tapping a card opens the detail sheet', async () => {
   trendingToReturn = [item(7)];
   await discover.refreshDiscover({ force: true });
   simulateTap(stackEl().querySelector('.card:last-child'));
+  await flush();
   assert.ok(lastOpened);
   assert.equal(lastOpened.title.tmdb_id, 7);
   assert.equal(lastOpened.state, 'unseen');
