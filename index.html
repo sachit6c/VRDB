@@ -19,21 +19,21 @@
 </head>
 <body>
 
-  <!-- ── Login (first visit) ── -->
+  <!-- ── Setup (first visit) ── -->
   <div id="name-picker" class="name-picker hidden">
     <div class="name-picker__logo">VRDB</div>
     <p class="name-picker__tagline">A movie &amp; TV backlog for two.</p>
-    <form id="login-form" class="login-form" autocomplete="off" novalidate>
-      <div class="login-field">
-        <label for="login-username">Username</label>
-        <input id="login-username" name="username" type="text" placeholder="Akshita" autocomplete="off" autocapitalize="words" spellcheck="false">
+    <p class="name-picker__prompt">Enter your names to connect your backlogs.</p>
+    <form id="setup-form" class="setup-form" autocomplete="off" novalidate>
+      <div class="setup-field">
+        <label for="setup-my-name">Your name</label>
+        <input id="setup-my-name" type="text" placeholder="Akshita" maxlength="30" autocomplete="off" autocapitalize="words" spellcheck="false">
       </div>
-      <div class="login-field">
-        <label for="login-password">Password</label>
-        <input id="login-password" name="password" type="password" placeholder="Soumit" autocomplete="off" autocapitalize="words" spellcheck="false">
+      <div class="setup-field">
+        <label for="setup-partner-name">Partner's name</label>
+        <input id="setup-partner-name" type="text" placeholder="Soumit" maxlength="30" autocomplete="off" autocapitalize="words" spellcheck="false">
       </div>
-      <p id="login-error" class="login-error" role="alert" aria-live="polite"></p>
-      <button type="submit" class="login-submit">Log in</button>
+      <button type="submit" class="setup-submit" disabled>Let's go</button>
     </form>
   </div>
 
@@ -173,6 +173,16 @@
     <div class="sheet__panel">
       <h2 class="sheet__title">Settings</h2>
 
+      <div class="sheet__row sheet__row--stack">
+        <label class="sheet__label" for="settings-my-name">Your name</label>
+        <input id="settings-my-name" class="sheet__input" type="text" maxlength="30" autocomplete="off" autocapitalize="words" spellcheck="false">
+      </div>
+
+      <div class="sheet__row sheet__row--stack">
+        <label class="sheet__label" for="settings-partner-name">Partner's name</label>
+        <input id="settings-partner-name" class="sheet__input" type="text" maxlength="30" autocomplete="off" autocapitalize="words" spellcheck="false">
+      </div>
+
       <div class="sheet__row">
         <span class="sheet__label">Theme</span>
         <div class="segmented" role="group" aria-label="Theme">
@@ -183,10 +193,11 @@
       </div>
 
       <div class="sheet__row">
-        <span class="sheet__label">Switch user</span>
-        <button id="switch-user-btn" class="segmented__btn" style="background: var(--surface-2);">Switch</button>
+        <span class="sheet__label">Log out</span>
+        <button id="switch-user-btn" class="segmented__btn" style="background: var(--surface-2);">Log out</button>
       </div>
 
+      <button id="settings-save" class="sheet__save" type="button">Save</button>
       <button id="settings-close" class="sheet__close" type="button">Close</button>
     </div>
   </div>

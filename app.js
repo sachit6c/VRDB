@@ -1,6 +1,6 @@
 // app.js — VRDB entry point.
 
-import { getMe, getPartner, clearMe, login } from './lib/identity.js';
+import { getMe, getPartner, clearMe, setNames, hasCompletedSetup } from './lib/identity.js';
 import { applyStoredTheme, getTheme, setTheme } from './lib/theme.js';
 import { initRouter } from './lib/router.js';
 import { initMine, refreshMine } from './lib/mine.js';
@@ -16,39 +16,43 @@ registerServiceWorker();
 wireConnectionToasts();
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (!getMe()) {
-    showLogin();
+  if (!hasCompletedSetup()) {
+    showSetup();
   } else {
     bootApp();
   }
 });
 
-function showLogin() {
+function showSetup() {
   const overlay = document.getElementById('name-picker');
-  const form = document.getElementById('login-form');
-  const usernameInput = document.getElementById('login-username');
-  const passwordInput = document.getElementById('login-password');
-  const errorEl = document.getElementById('login-error');
+  const form = document.getElementById('setup-form');
+  const myNameInput = document.getElementById('setup-my-name');
+  const partnerInput = document.getElementById('setup-partner-name');
+  const submitBtn = form.querySelector('.setup-submit');
 
-  const clearError = () => { errorEl.textContent = ''; };
-  usernameInput.addEventListener('input', clearError);
-  passwordInput.addEventListener('input', clearError);
+  // Pre-fill if we have partial data (e.g. only one name was stored before).
+  myNameInput.value = getMe() ?? '';
+  partnerInput.value = getPartner() ?? '';
+
+  const validate = () => {
+    submitBtn.disabled = !(myNameInput.value.trim() && partnerInput.value.trim());
+  };
+  myNameInput.addEventListener('input', validate);
+  partnerInput.addEventListener('input', validate);
+  validate();
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const me = login(usernameInput.value, passwordInput.value);
-    if (!me) {
-      errorEl.textContent = 'Incorrect username or password.';
-      passwordInput.value = '';
-      passwordInput.focus();
-      return;
-    }
+    const me = myNameInput.value.trim();
+    const partner = partnerInput.value.trim();
+    if (!me || !partner) return;
+    setNames(me, partner);
     overlay.classList.add('hidden');
     bootApp();
   });
 
   overlay.classList.remove('hidden');
-  usernameInput.focus();
+  myNameInput.focus();
 }
 
 function bootApp() {
@@ -90,10 +94,15 @@ function wireSettings() {
   const sheet = document.getElementById('settings-sheet');
   const openBtn = document.getElementById('settings-btn');
   const closeBtn = document.getElementById('settings-close');
+  const saveBtn = document.getElementById('settings-save');
   const switchUserBtn = document.getElementById('switch-user-btn');
+  const myNameInput = document.getElementById('settings-my-name');
+  const partnerInput = document.getElementById('settings-partner-name');
 
   openBtn?.addEventListener('click', () => {
     renderThemeSegmented();
+    myNameInput.value = getMe() ?? '';
+    partnerInput.value = getPartner() ?? '';
     sheet.classList.remove('hidden');
   });
   closeBtn?.addEventListener('click', () => sheet.classList.add('hidden'));
@@ -101,8 +110,22 @@ function wireSettings() {
     if (e.target === sheet) sheet.classList.add('hidden');
   });
 
+  saveBtn?.addEventListener('click', () => {
+    const me = myNameInput.value.trim();
+    const partner = partnerInput.value.trim();
+    if (!me || !partner) {
+      toast('Both names are required.', { kind: 'warn' });
+      return;
+    }
+    const changed = me !== getMe() || partner !== getPartner();
+    setNames(me, partner);
+    sheet.classList.add('hidden');
+    // Reload so every data view picks up the new identity cleanly.
+    if (changed) location.reload();
+  });
+
   switchUserBtn?.addEventListener('click', () => {
-    if (confirm('Log out? You will need to log in again.')) {
+    if (confirm('Log out? You will need to enter your names again.')) {
       clearMe();
       location.reload();
     }

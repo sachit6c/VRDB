@@ -88,8 +88,8 @@ button {
 .name-picker__btn:hover { background: var(--surface-2); }
 .name-picker__btn:active { transform: scale(0.97); }
 
-/* ── Login form ──────────────────────────────────────────────── */
-.login-form {
+/* ── Setup form ──────────────────────────────────────────────── */
+.setup-form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -97,21 +97,21 @@ button {
   max-width: 320px;
 }
 
-.login-field {
+.setup-field {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
   text-align: left;
 }
 
-.login-field label {
+.setup-field label {
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text-dim);
 }
 
-.login-field input {
+.setup-field input {
   font-family: inherit;
   font-size: 1.05rem;
   padding: 0.85rem 1rem;
@@ -123,23 +123,15 @@ button {
   transition: border-color 0.15s, background 0.15s;
 }
 
-.login-field input::placeholder { color: var(--text-dim); opacity: 0.6; }
+.setup-field input::placeholder { color: var(--text-dim); opacity: 0.6; }
 
-.login-field input:focus {
+.setup-field input:focus {
   outline: none;
   border-color: var(--accent);
   background: var(--surface-2);
 }
 
-.login-error {
-  font-size: 0.85rem;
-  color: #e5484d;
-  margin: -0.25rem 0 0;
-  min-height: 1.1em;
-  text-align: left;
-}
-
-.login-submit {
+.setup-submit {
   font-family: var(--font-display);
   font-size: 1.5rem;
   letter-spacing: 0.08em;
@@ -150,8 +142,9 @@ button {
   transition: transform 0.1s, filter 0.15s;
 }
 
-.login-submit:hover { filter: brightness(1.05); }
-.login-submit:active { transform: scale(0.97); }
+.setup-submit:hover { filter: brightness(1.05); }
+.setup-submit:active { transform: scale(0.97); }
+.setup-submit:disabled { opacity: 0.45; cursor: not-allowed; }
 
 /* ── App shell ──────────────────────────────────────────────── */
 .app {
@@ -295,8 +288,31 @@ button {
 
 .sheet__row:first-of-type { border-top: none; }
 
+.sheet__row--stack {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+}
+
 .sheet__label {
   font-size: 0.95rem;
+}
+
+.sheet__input {
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: 100%;
+  transition: border-color 0.15s;
+}
+
+.sheet__input:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 .segmented {
@@ -337,10 +353,22 @@ button {
   white-space: nowrap;
 }
 
+.sheet__save {
+  display: block;
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0.85rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 .sheet__close {
   display: block;
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 0.6rem;
   padding: 0.85rem;
   background: var(--surface-2);
   color: var(--text);
