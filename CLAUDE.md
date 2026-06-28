@@ -48,6 +48,9 @@ list from commit authors *and* `Co-Authored-By` trailers, and stray identities
   git config user.name   # must print: sachit6c
   git config user.email  # must print: 272665254+sachit6c@users.noreply.github.com
   ```
+  The personal email `sachit007@gmail.com` is also an acceptable author email
+  for `sachit6c` (e.g. if git is configured with it locally); never use any
+  other identity.
 - Before pushing, verify no trailers or foreign authors slipped in:
   ```bash
   git log origin/main..HEAD --format='%an <%ae> | %b' | grep -i 'co-authored-by' && echo "STOP: strip co-authors before pushing"
