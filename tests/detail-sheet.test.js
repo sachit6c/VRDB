@@ -27,6 +27,10 @@ mock.module('../lib/tmdb-client.js', {
     posterUrl: (p, s) => (p ? `https://img/${s}${p}` : null),
     providerLogoUrl: (p) => (p ? `https://logo${p}` : null),
     getWatchProviders: async () => { if (providersError) throw new Error('nope'); return providersResult; },
+    genresOf: () => [],
+    getTitleDetails: async () => ({ spoken_languages: [] }),
+    spokenLanguagesOf: (d) => (d?.spoken_languages ?? []).map((l) => l.english_name || l.name),
+    googleSearchUrl: (q) => `https://www.google.com/search?q=${encodeURIComponent(q)}`,
   },
 });
 

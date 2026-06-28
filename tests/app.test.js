@@ -130,15 +130,16 @@ test('settings: open reflects current theme, theme buttons apply, close hides', 
   assert.equal(sheet.classList.contains('hidden'), true);
 });
 
-test('settings: backdrop click closes the sheet', () => {
+test('settings: backdrop press closes the sheet', () => {
   localStorage.setItem('vrdb.me', 'Alice');
   localStorage.setItem('vrdb.partner', 'Bob');
   fireDCL();
   const sheet = $('settings-sheet');
   $('settings-btn').click();
   assert.equal(sheet.classList.contains('hidden'), false);
-  // click directly on the backdrop (target === sheet)
-  sheet.dispatchEvent(new window.MouseEvent('click', { bubbles: true }));
+  // pointerdown directly on the backdrop (target === sheet). pointerdown, not
+  // click, dodges the mobile ghost-click that would otherwise re-close it.
+  sheet.dispatchEvent(new window.Event('pointerdown', { bubbles: true }));
   assert.equal(sheet.classList.contains('hidden'), true);
 });
 

@@ -27,7 +27,7 @@ Deployments go to **Vercel**, triggered automatically when `main` is pushed to G
 
 The GitHub PAT lives in `~/.zshrc` as `$GITHUB_TOKEN` (user: `$GITHUB_USER` = `sachit6c`). Never commit the literal token.
 
-**Always use this exact push command** (authenticated as `sachit6c`):
+**Always use this exact push command** (authenticated as `sachit6c`). Never push via any other account — do not use `sharmasachit`, Claude's identity, VS Code signed-in accounts, or any system credential helper:
 
 ```bash
 git push "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/sachit6c/VRDB.git" main --tags

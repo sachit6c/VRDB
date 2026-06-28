@@ -9,6 +9,7 @@ import { initPartner, refreshPartner } from './lib/partner.js';
 import { initShared, refreshShared } from './lib/shared.js';
 import { initSearchModal } from './lib/search-modal.js';
 import { initDetailSheet } from './lib/detail-sheet.js';
+import { openSheet, closeSheet, makeDismissable } from './lib/sheet.js';
 import { toast } from './lib/toast.js';
 
 applyStoredTheme();
@@ -95,6 +96,7 @@ function setEmptyState(id, text) {
 
 function wireSettings() {
   const sheet = document.getElementById('settings-sheet');
+  const panel = sheet.querySelector('.sheet__panel');
   const openBtn = document.getElementById('settings-btn');
   const closeBtn = document.getElementById('settings-close');
   const saveBtn = document.getElementById('settings-save');
@@ -102,16 +104,24 @@ function wireSettings() {
   const myNameInput = document.getElementById('settings-my-name');
   const partnerInput = document.getElementById('settings-partner-name');
 
+  const close = () => closeSheet(sheet, panel);
+
   openBtn?.addEventListener('click', () => {
     renderThemeSegmented();
     myNameInput.value = getMe() ?? '';
     partnerInput.value = getPartner() ?? '';
-    sheet.classList.remove('hidden');
+    openSheet(sheet);
   });
-  closeBtn?.addEventListener('click', () => sheet.classList.add('hidden'));
-  sheet?.addEventListener('click', (e) => {
-    if (e.target === sheet) sheet.classList.add('hidden');
+  closeBtn?.addEventListener('click', close);
+  // pointerdown (not click) on the backdrop dodges the mobile ghost-click that
+  // would otherwise re-close the sheet the instant it opens.
+  sheet?.addEventListener('pointerdown', (e) => {
+    if (e.target === sheet) close();
   });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !sheet.classList.contains('hidden')) close();
+  });
+  makeDismissable(sheet, panel, close, panel);
 
   saveBtn?.addEventListener('click', () => {
     const me = myNameInput.value.trim();
@@ -122,9 +132,9 @@ function wireSettings() {
     }
     const changed = me !== getMe() || partner !== getPartner();
     setNames(me, partner);
-    sheet.classList.add('hidden');
     // Reload so every data view picks up the new identity cleanly.
     if (changed) location.reload();
+    else close();
   });
 
   switchUserBtn?.addEventListener('click', () => {

@@ -3,7 +3,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { installFetch, resetGlobals } from './helpers/dom-shim.js';
 import {
-  posterUrl, yearOf, titleOf, providerLogoUrl,
+  posterUrl, yearOf, titleOf, genresOf, providerLogoUrl,
+  spokenLanguagesOf, googleSearchUrl,
   searchMulti, getTrending, getRelated, discoverByGenre, getWatchProviders,
   TMDB_IMG_BASE,
 } from '../lib/tmdb-client.js';
@@ -36,6 +37,36 @@ test('titleOf falls back across title/name/untitled', () => {
   assert.equal(titleOf({ title: 'Inception' }), 'Inception');
   assert.equal(titleOf({ name: 'Stranger Things' }), 'Stranger Things');
   assert.equal(titleOf({}), '(untitled)');
+});
+
+test('genresOf maps genre_ids and genres objects to names', () => {
+  // list/search rows carry genre_ids
+  assert.deepEqual(genresOf({ genre_ids: [28, 878] }), ['Action', 'Sci-Fi']);
+  // cached DB rows carry genres objects (prefer their own name)
+  assert.deepEqual(genresOf({ genres: [{ id: 18, name: 'Drama' }] }), ['Drama']);
+  // genres objects with only an id still resolve via the static map
+  assert.deepEqual(genresOf({ genres: [{ id: 35 }] }), ['Comedy']);
+  // unknown ids are dropped; max caps the count
+  assert.deepEqual(genresOf({ genre_ids: [28, 12, 16, 35], max: 2 }, 2), ['Action', 'Adventure']);
+  assert.deepEqual(genresOf({ genre_ids: [999999] }), []);
+  assert.deepEqual(genresOf({}), []);
+});
+
+test('spokenLanguagesOf prefers english_name, falls back, caps, tolerates missing', () => {
+  assert.deepEqual(
+    spokenLanguagesOf({ spoken_languages: [{ english_name: 'English' }, { name: 'Français' }] }),
+    ['English', 'Français'],
+  );
+  assert.deepEqual(
+    spokenLanguagesOf({ spoken_languages: [{ english_name: 'A' }, { english_name: 'B' }, { english_name: 'C' }] }, 2),
+    ['A', 'B'],
+  );
+  assert.deepEqual(spokenLanguagesOf({}), []);
+  assert.deepEqual(spokenLanguagesOf(null), []);
+});
+
+test('googleSearchUrl encodes the query', () => {
+  assert.equal(googleSearchUrl('Dune 2021 movie'), 'https://www.google.com/search?q=Dune%202021%20movie');
 });
 
 // ── fetch-backed API ──────────────────────────────────────────────────────────
