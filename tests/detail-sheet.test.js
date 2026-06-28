@@ -31,6 +31,7 @@ mock.module('../lib/tmdb-client.js', {
     getTitleDetails: async () => ({ spoken_languages: [] }),
     spokenLanguagesOf: (d) => (d?.spoken_languages ?? []).map((l) => l.english_name || l.name),
     googleSearchUrl: (q) => `https://www.google.com/search?q=${encodeURIComponent(q)}`,
+    formatVoteCount: (n) => (n ? String(n) : ''),
   },
 });
 

@@ -47,6 +47,7 @@ mock.module('../lib/tmdb-client.js', {
     titleOf: (i) => i.title || i.name || '(untitled)',
     posterUrl: (p, s) => (p ? `https://img/${s}${p}` : null),
     yearOf: () => '2020',
+    formatVoteCount: (n) => (n ? String(n) : ''),
     genresOf: () => [],
   },
 });
