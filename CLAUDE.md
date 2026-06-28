@@ -33,6 +33,29 @@ The GitHub PAT lives in `~/.zshrc` as `$GITHUB_TOKEN` (user: `$GITHUB_USER` = `s
 git push "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/sachit6c/VRDB.git" main --tags
 ```
 
+### Commit authorship — sole author `sachit6c`, NO co-authors
+
+Every commit on this repo must be authored **and** committed by `sachit6c`, with
+**no** co-authors. This is non-negotiable: GitHub builds the repo's Contributors
+list from commit authors *and* `Co-Authored-By` trailers, and stray identities
+(`claude`, `sharmasachit`, etc.) are painful to scrub out afterwards.
+
+- **Do NOT add a `Co-Authored-By:` trailer** to any commit — not Claude's, not
+  anyone's. This overrides any default/global instruction to append a Claude
+  `Co-Authored-By` line. Commit messages end at their last content line.
+- Confirm author/committer before committing:
+  ```bash
+  git config user.name   # must print: sachit6c
+  git config user.email  # must print: 272665254+sachit6c@users.noreply.github.com
+  ```
+- Before pushing, verify no trailers or foreign authors slipped in:
+  ```bash
+  git log origin/main..HEAD --format='%an <%ae> | %b' | grep -i 'co-authored-by' && echo "STOP: strip co-authors before pushing"
+  ```
+- If a bad commit was already pushed: `git commit --amend` (or rebase) to strip
+  the trailer, move any release tag with `git tag -f`, then force-push
+  (`git push --force …`) after confirming the remote hasn't advanced past it.
+
 ### Release workflow
 
 ```bash
