@@ -248,6 +248,14 @@ button {
   outline-offset: 2px;
 }
 
+/* Mine: sort sits on its own row beneath the filter tabs so the crowded
+   toolbar (4 tabs + settings) doesn't overflow on narrow phones. */
+.mine-sort-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
 /* Shared / Partner toolbars: right-align the sort control on one row. */
 .shared-toolbar {
   display: flex;
@@ -584,6 +592,16 @@ button {
   font-size: 0.75rem;
   color: var(--text-dim);
   margin-top: 0.2rem;
+}
+
+.backlog-card__detail {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  white-space: nowrap;
+  text-align: right;
+  padding-left: 0.5rem;
 }
 
 .backlog-card[data-state="watched"] .backlog-card__poster img {
@@ -1107,7 +1125,7 @@ button {
 
 .shared-row {
   display: grid;
-  grid-template-columns: 56px 1fr auto;
+  grid-template-columns: 56px 1fr auto auto;
   gap: 0.75rem;
   align-items: center;
   padding: 0.5rem;
@@ -1157,6 +1175,14 @@ button {
   font-weight: 600;
   font-size: 0.7rem;
   letter-spacing: 0.04em;
+}
+
+.shared-row__detail {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  white-space: nowrap;
+  text-align: right;
 }
 
 .shared-row__chev {

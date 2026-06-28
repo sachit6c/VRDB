@@ -149,7 +149,9 @@ test('action buttons persist a swipe with the mapped state', async () => {
   await flush();
   assert.equal(setMyStateCalls.length, 1);
   assert.equal(setMyStateCalls[0].state, 'watch_now');
-  assert.equal(setMyStateCalls[0].addedByMe, false);
+  // Discover swipes are a proactive add to my own backlog, so added_by_me=true
+  // (this is what surfaces the title on my partner's Partner tab).
+  assert.equal(setMyStateCalls[0].addedByMe, true);
   assert.equal(setMyStateCalls[0].tmdbId, 1);
 });
 
