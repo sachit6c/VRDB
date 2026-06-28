@@ -1,6 +1,6 @@
 {
   "name": "vrdb",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "A movie & TV backlog app for two — Tinder-style swiping with a shared matched list",
   "type": "module",
   "scripts": {
