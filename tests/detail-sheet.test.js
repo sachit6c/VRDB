@@ -9,6 +9,7 @@ localStorage.setItem('vrdb.me', 'Alice');
 
 // ── Controllable fakes ────────────────────────────────────────────────────────
 const setMyStateCalls = [];
+const upsertTitleCalls = [];
 const removeMyStateCalls = [];
 let providersResult = { link: null, flatrate: [], rent: [], buy: [] };
 let providersError = false;
@@ -17,6 +18,7 @@ mock.module('../lib/db.js', {
   namedExports: {
     STATES: { WATCH_NOW: 'watch_now', WATCH_LATER: 'watch_later', WATCHED: 'watched', HELL_NO: 'hell_no', UNSEEN: 'unseen' },
     STATE_LABELS: { watch_now: 'Watch now', watch_later: 'Watch later', watched: 'Watched', hell_no: 'Hell no', unseen: 'Not set' },
+    upsertTitle: async (row) => { upsertTitleCalls.push(row); },
     setMyState: async (args) => { setMyStateCalls.push(args); },
     removeMyState: async (args) => { removeMyStateCalls.push(args); },
   },
@@ -53,6 +55,7 @@ const entry = (titleOver = {}, entryOver = {}) => ({
 
 beforeEach(() => {
   setMyStateCalls.length = 0;
+  upsertTitleCalls.length = 0;
   removeMyStateCalls.length = 0;
   onChangeCount = 0;
   providersResult = { link: null, flatrate: [], rent: [], buy: [] };
@@ -143,6 +146,17 @@ test('selecting a different state saves, notifies, and closes', async () => {
   assert.deepEqual(setMyStateCalls[0], { me: 'Alice', tmdbId: 1, state: 'watch_now', addedByMe: false });
   assert.equal(onChangeCount, 1);
   assert.equal(sheet.classList.contains('hidden'), true);
+});
+
+test('caches the title before setting state (FK to titles)', async () => {
+  open(entry()); // title not guaranteed to be in titles yet (e.g. a Discover tap)
+  panel.querySelector('.detail__state-btn[data-state="hell_no"]').click();
+  await flush();
+  // upsertTitle must run, and before setMyState, or the FK constraint fails.
+  assert.equal(upsertTitleCalls.length, 1);
+  assert.equal(upsertTitleCalls[0].id, 1);
+  assert.equal(setMyStateCalls.length, 1);
+  assert.equal(setMyStateCalls[0].state, 'hell_no');
 });
 
 test('passes through addedByMe when set', async () => {
